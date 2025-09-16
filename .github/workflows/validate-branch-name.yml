@@ -1,0 +1,16 @@
+name: Validate Branch Name
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  validate-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          if [[ ! "$BRANCH_NAME" =~ ^(feature|release|hotfix)/ ]]; then
+            echo "❌ Branch inválida. Use feature/*, release/* ou hotfix/*"
+            exit 1
+          fi
